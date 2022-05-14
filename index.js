@@ -43,7 +43,7 @@ const searchRouter = require ("./routes/search");
 customSearchQuery.use(bodyParser.json());
 
 customSearchQuery.use ("/metricDefinition", metricDefinitionRouter);
-customSearchQuery.use(bodyParser.json());
+customSearchQuery.use ("/search", searchRouter);
 
 console.log("This works");
 
