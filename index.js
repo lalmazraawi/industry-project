@@ -30,21 +30,21 @@
 //     console.log('Listening on 1339')
 // })
 
-//Set body-parser to be able to read body from POST requests
-const express = require("express");
-const bodyParser = require ('body-parser');
-const customSearchQuery = express();
+// Set body-parser to be able to read body from POST requests
+const express = require('express')
+const bodyParser = require('body-parser')
+const customSearchQuery = express()
 
-const metricDefinitionRouter = require ("./routes/metricDefinition");
-const searchRouter = require ("./routes/search");
+const metricDefinitionRouter = require('./routes/metricDefinition')
+const searchRouter = require('./routes/search')
 
-//Set body-parser to be able to read body from POST requests
+// Set body-parser to be able to read body from POST requests
 
-customSearchQuery.use(bodyParser.json());
+customSearchQuery.use(bodyParser.json())
 
-customSearchQuery.use ("/metricDefinition", metricDefinitionRouter);
-customSearchQuery.use ("/search", searchRouter);
+customSearchQuery.use('/metricDefinition', metricDefinitionRouter)
+customSearchQuery.use('/search', searchRouter)
 
-console.log("This works");
+console.log('This works') // eslint-disable-line no-console
 
-customSearchQuery.listen(3000);
+customSearchQuery.listen(3000)
