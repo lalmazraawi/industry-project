@@ -13,7 +13,9 @@ const transactions = require('../repository/transactionRepository')
 const restaurants = require('../repository/restaurantRepository')
 
 const filterData = async (req, res) => {
-  const { restaurantIds, fromDate, toDate, fromHour, toHour, metricCriteria } = req.body
+  const {
+    restaurantIds, fromDate, toDate, fromHour, toHour, metricCriteria
+  } = req.body
 
   const foundRestaurants = await restaurants.findAll({
     // where { Id : restaurantIds }
@@ -26,7 +28,7 @@ const filterData = async (req, res) => {
     // pass metricCriteria to a filterMetrics function
   })
 
-  return res.status(200).send( { foundRestaurants, foundTransactions })
+  return res.status(200).send({ foundRestaurants, foundTransactions })
 }
 
 const filterMetrics = () => {

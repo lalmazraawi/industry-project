@@ -1,7 +1,6 @@
-const restaurantData = require("../data/RestaurantData.json")
+const restaurantData = require('../data/RestaurantData.json')
 
-function getRestaurantData (){
-    return restaurantData
-
+function getRestaurantData() {
+  return restaurantData
 }
-module.exports = {getRestaurantData};
+module.exports = { getRestaurantData }

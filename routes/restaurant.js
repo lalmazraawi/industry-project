@@ -1,13 +1,12 @@
-const express = require("express");
-const restaurantRepository = require ("../repository/restaurantRepository");
-const router = express.Router();
+const express = require('express')
+const restaurantRepository = require('../repository/restaurantRepository')
+const router = express.Router()
 
-//Get metricDefinitions
-router.get("/", (req, res)=>{
-    const restaurant = restaurantRepository.getRestaurantData();
+// Get metricDefinitions
+router.get('/', (req, res) => {
+  const restaurant = restaurantRepository.getRestaurantData()
 
-    res.send(restaurant);
+  res.send(restaurant)
+})
 
-});
-
-module.exports = router; 
+module.exports = router

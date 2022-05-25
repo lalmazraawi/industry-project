@@ -1,7 +1,6 @@
-const transactionDataNew = require("../data/TransactionDataNew.json")
+const transactionDataNew = require('../data/TransactionDataNew.json')
 
-function getTransactionDataNew (){
-    return transactionDataNew;
-
+function getTransactionDataNew() {
+  return transactionDataNew
 }
-module.exports = {getTransactionDataNew};
+module.exports = { getTransactionDataNew }
