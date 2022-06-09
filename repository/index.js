@@ -7,8 +7,7 @@ const environment = process.env.NODE_ENV || 'development'
 const { username, password, database, host, dialect } = config[environment] //eslint-disable-line
 
 const connection = new Sequelize(database, username, password, {
-  host: host,
-  dialect: dialect
+  host: host, dialect: dialect
 })
 
 const Restaurants = restaurants(connection, Sequelize)
