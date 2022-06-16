@@ -11,7 +11,7 @@ const connection = new Sequelize(database, username, password, {
 })
 
 const Restaurants = restaurants(connection, Sequelize)
-const Transactions = transactions(connection, Sequelize)
+const Transactions = transactions(connection, Sequelize, Restaurants)
 const MetricDefinitions = metricDefinitions(connection, Sequelize)
 
 Restaurants.hasMany(Transactions)

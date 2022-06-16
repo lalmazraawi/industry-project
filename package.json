@@ -14,7 +14,8 @@
     "sequelize-cli": "^6.4.1"
   },
   "scripts": {
-    "dev": "nodemon index.js",
-    "dev:migrate": "./node_modules/.bin/env-cmd ./node_modules/.bin/sequelize db:migrate --env development --config ./config/sequelize.js"
+    "dev": "env-cmd nodemon index.js",
+    "dev:migrate": "./node_modules/.bin/env-cmd ./node_modules/.bin/sequelize db:migrate --env development --config ./config/sequelize.js",
+    "dev:migrate:down": "./node_modules/.bin/env-cmd ./node_modules/.bin/sequelize db:migrate:undo --env development --config ./config/sequelize.js"
   }
 }
