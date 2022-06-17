@@ -1,5 +1,4 @@
-const transactions = require('../repository/transactionRepository')
-const restaurants = require('../repository/restaurantRepository')
+const models = require('../repository')
 const { Op } = require('sequelize')
 
 const filterData = async (req, res) => {
@@ -18,7 +17,7 @@ const filterData = async (req, res) => {
   const searchQuery = {
     RestaurantId: restaurantIds,
     BusDt: { [Op.between]: [fromDate, toDate] },
-    OrderTime: { [Op.between]: [(fromHour * 60), (toHour * 60)] }
+    OrderTimeMinuteOfDay: { [Op.between]: [(fromHour * 60), (toHour * 60)] }
   }
 
   for (let i = 0; i < metricCriteria.length; i++) {
@@ -28,11 +27,11 @@ const filterData = async (req, res) => {
     searchQuery[metricCode] = { [seqCompareType]: value }
   }
 
-  const foundTransactions = await transactions.findAll({
+  const foundTransactions = await models.Transactions.findAll({
     where: searchQuery
   })
 
-  const foundRestaurants = await restaurants.findAll({
+  const foundRestaurants = await models.Restaurants.findAll({
     where: { Id: restaurantIds }
   })
 
