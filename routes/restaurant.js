@@ -1,12 +1,17 @@
 const express = require('express')
-const restaurantRepository = require('../repository/restaurantRepository')
+const models = require('../repository')
 const router = express.Router()
 
 // Get metricDefinitions
-router.get('/', (req, res) => {
-  const restaurant = restaurantRepository.getRestaurantData()
+router.get('/', async (req, res) => {
+  try {
+    const restaurants = await models.Restaurants.findAll()
 
-  res.send(restaurant)
+    return res.send(restaurants)
+  }
+  catch (error) {
+    return res.sendStatus(500)
+  }
 })
 
 module.exports = router

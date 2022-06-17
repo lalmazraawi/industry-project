@@ -8,7 +8,10 @@ module.exports = {
       Address: { type: Sequelize.STRING },
       City: { type: Sequelize.STRING },
       State: { type: Sequelize.STRING },
-      Zipcode: { type: Sequelize.STRING }
+      Zipcode: { type: Sequelize.STRING },
+      createdAt: { type: Sequelize.DATE, defaultValue: Sequelize.literal('NOW()') },
+      updatedAt: { type: Sequelize.DATE, defaultValue: Sequelize.literal('NOW() ON UPDATE NOW()') },
+      deletedAt: { type: Sequelize.DATE }
     })
 
     await queryInterface.createTable('metricDefinitions', {
@@ -16,7 +19,10 @@ module.exports = {
       MetricCode: { type: Sequelize.STRING },
       Alias: { type: Sequelize.STRING },
       DataType: { type: Sequelize.STRING },
-      DecimalPlaces: { type: Sequelize.INTEGER }
+      DecimalPlaces: { type: Sequelize.INTEGER },
+      createdAt: { type: Sequelize.DATE, defaultValue: Sequelize.literal('NOW()') },
+      updatedAt: { type: Sequelize.DATE, defaultValue: Sequelize.literal('NOW() ON UPDATE NOW()') },
+      deletedAt: { type: Sequelize.DATE }
     })
 
     return queryInterface.createTable('transactions', {
@@ -32,7 +38,10 @@ module.exports = {
       DiscountAmount: { type: Sequelize.FLOAT },
       DiscountRatio: { type: Sequelize.FLOAT },
       ItemDeletedAmount: { type: Sequelize.FLOAT },
-      RefundAmount: { type: Sequelize.FLOAT }
+      RefundAmount: { type: Sequelize.FLOAT },
+      createdAt: { type: Sequelize.DATE, defaultValue: Sequelize.literal('NOW()') },
+      updatedAt: { type: Sequelize.DATE, defaultValue: Sequelize.literal('NOW() ON UPDATE NOW()') },
+      deletedAt: { type: Sequelize.DATE }
     })
   },
 

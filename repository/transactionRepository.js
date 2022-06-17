@@ -13,7 +13,7 @@ const transactions = (connection, Sequelize, Restaurants) => {
     DiscountRatio: { type: Sequelize.FLOAT },
     ItemDeletedAmount: { type: Sequelize.FLOAT },
     RefundAmount: { type: Sequelize.FLOAT }
-  })
+  }, { paranoid: true })
 }
 
 module.exports = transactions

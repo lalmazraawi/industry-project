@@ -5,7 +5,7 @@ const metricDefinitions = (connection, Sequelize) => {
     Alias: { type: Sequelize.STRING },
     DataType: { type: Sequelize.STRING },
     DecimalPlaces: { type: Sequelize.INTEGER }
-  })
+  }, { paranoid: true })
 }
 
 module.exports = metricDefinitions

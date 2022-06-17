@@ -2,6 +2,7 @@ const Sequelize = require('sequelize')
 const restaurants = require('./restaurantRepository')
 const transactions = require('./transactionRepository')
 const metricDefinitions = require('./metricDefinitionRepository')
+const config = require('../config/sequelize')
 
 const environment = process.env.NODE_ENV || 'development'
 const { username, password, database, host, dialect } = config[environment] //eslint-disable-line

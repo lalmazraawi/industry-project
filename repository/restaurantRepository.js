@@ -6,7 +6,7 @@ const restaurants = (connection, Sequelize) => {
     City: { type: Sequelize.STRING },
     State: { type: Sequelize.STRING },
     Zipcode: { type: Sequelize.STRING }
-  })
+  }, { paranoid: true })
 }
 
 module.exports = restaurants
