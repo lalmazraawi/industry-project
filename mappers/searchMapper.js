@@ -28,14 +28,14 @@ const filterData = async (req, res) => {
   }
 
   const foundTransactions = await models.Transactions.findAll({
-    where: searchQuery
+    where: searchQuery,
+    include: [{
+      model: models.Restaurants,
+      attributes: ['Id', 'Name']
+    }]
   })
 
-  const foundRestaurants = await models.Restaurants.findAll({
-    where: { Id: restaurantIds }
-  })
-
-  return res.status(200).send({ foundRestaurants, foundTransactions })
+  return res.status(200).send({ foundTransactions })
 }
 
 module.exports = filterData

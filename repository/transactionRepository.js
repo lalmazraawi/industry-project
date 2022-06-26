@@ -13,7 +13,10 @@ const transactions = (connection, Sequelize, Restaurants) => {
     DiscountRatio: { type: Sequelize.FLOAT },
     ItemDeletedAmount: { type: Sequelize.FLOAT },
     RefundAmount: { type: Sequelize.FLOAT }
-  }, { paranoid: true })
+  }, {
+    paranoid: true,
+    defaultScope: { attributes: { exclude: ['createdAt', 'updatedAt', 'deletedAt'] } }
+  })
 }
 
 module.exports = transactions
