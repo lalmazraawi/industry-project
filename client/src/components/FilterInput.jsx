@@ -1,229 +1,188 @@
 import React, { useState, useEffect } from "react";
 import axios from 'axios';
+import { Form, FloatingLabel, Button, Row, Col } from 'react-bootstrap';
+import { DateRangePicker } from 'react-dates';
+import moment from "moment";
 
 const FilterInput = () => {
 
-    useEffect(() => {
-        const initialFormData = {
-            restaurantIds: [1,2], // array
-            fromDate: "2021-03-11T00:00:00.000Z", // date string in format YYYY-MM-DD
-            toDate: "2021-05-11T00:00:00.000Z", // date string in format YYYY-MM-DD
-            fromHour: 6, // integer (min value is 6, max value is 29)
-            toHour: 29, // integer (min value is 6, max value is 29)
-            metricCriteria: [{
-                metricCode: "TotalAmount", // string (comes from a list of metric codes in Metric Definitions)
-                compareType: "GreaterThan", // string - one of the compare type options
-                value: 35 // decimal (numerical value)
-            }] // array of metric criteria
-        };
-        const fetchTransactions = async () => {
-            let {data} = await axios.post('http://localhost:1337/search', initialFormData)
-            console.log(data)
-        }
+  const [metricDefinitions, setMetricDefinitions] = useState([]);
+  const [restaurantIds, setRestaurantIds] = useState([]);
+  const [restaurants, setRestaurants] = useState([]);
+  const [fromHour, setFromHour] = useState(6);
+  const [toHour, setToHour] = useState(29);
+  const [dates, setDates] = useState({
+      fromDate: moment("2021-03-11"),
+      toDate: moment("2021-05-11")
+  });
+  const [focusedInput, setFocusedInput] = useState('startDate');
+  const [metricCode, setMetricCode] = useState('')
+  const [compareType, setCompareType] = useState('')
+  const [compareValue, setCompareValue] = useState('')
 
-        fetchTransactions ()
+  useEffect(() => {
+    const fetchMetricDefintions = async () => {
+      let {data} = await axios.get('http://localhost:1337/metricDefinition')
+      setMetricDefinitions(data)
+    }
 
-        .catch(console.error);
+    fetchMetricDefintions ()
+    .catch(console.error);
 
+  }, [])
+
+  useEffect(() => {
+    const fetcheRestaurants = async () => {
+      let {data} = await axios.get('http://localhost:1337/restaurants')
+      setRestaurants(data)
+    }
+
+    fetcheRestaurants()
+      .catch(console.error);
     }, [])
 
-    useEffect(() => {
-            
-        const fetchMetricDefintions = async () => {
-            let {data} = await axios.get('http://localhost:1337/metricDefinition')
-            console.log(data)
-        }
+  const restaurantCheckboxChanged = (id) => {
+    const newId = restaurantIds.find((restaurantId) => {
+      return (restaurantId === id)
+    });
 
-        fetchMetricDefintions ()
+    const newArray = [];
+    if (!newId) {
+      for (let i = 0; i < restaurantIds.length; i++) {
+        newArray[i] = restaurantIds[i];
+      }
+      newArray.push(id);
 
-        .catch(console.error);
+      setRestaurantIds(newArray);
+    } else {
+      for (let i = 0; i < restaurantIds.length; i++) {
+        if (restaurantIds[i] !== id) {
+          newArray.push(restaurantIds[i]);
+        }  
+      }
 
-    }, [])
+      setRestaurantIds(newArray);
+    }
+  }
 
-    
-    
-    useEffect(() => {
-        // declare the data fetching function
-        const fetchData = async () => {
-            let {data} = await axios.get('http://localhost:1337/restaurants')
-            console.log(data)
-        }
-      
-        // call the function
-        fetchData()
-          // make sure to catch any error
-          .catch(console.error);
-      }, [])
+  const submitForm = () => {
+    const initialFormData = {
+      restaurantIds: restaurantIds, // array
+      fromDate: dates.fromDate, // date string in format YYYY-MM-DD
+      toDate: dates.toDate, // date string in format YYYY-MM-DD
+      fromHour: fromHour, // integer (min value is 6, max value is 29)
+      toHour: toHour, // integer (min value is 6, max value is 29)
+      metricCriteria: [{
+        metricCode: metricCode, // string (comes from a list of metric codes in Metric Definitions)
+        compareType: compareType, // string - one of the compare type options
+        value: Number(compareValue) // decimal (numerical value)
+      }] // array of metric criteria
+    };
 
+    const fetchTransactions = async () => {
+      let { data } = await axios.post('http://localhost:1337/search', initialFormData)
+      console.log(data)
+    }
+    fetchTransactions()
+      .catch(console.error);
+  }
 
+  const hours = []
+  for (let i = 6; i < 30; i++) {
+    hours.push(i)
+  }
 
-return (
-<div> 
-<form>
-<div>
-                <input type="checkbox" aria-label="Checkbox for following text input" />
-            <label>Restaurant 1</label>
+  const compareTypes = [
+    { value: 'LessThan', text: '<' },
+    { value: 'LessThanOrEqual', text: '<=' },
+    { value: 'Equal', text: '=' },
+    { value: 'GreaterThan', text: '>' },
+    { value: 'GreaterThanOrEqual', text: '>=' }
+  ]
+
+  return (
+    <div>   
+      <Form>
+        <Row>
+          <div>
+            {restaurants.map((restaurant, index) => (
+              <div key={index} className="mb-3">
+                <Form.Check
+                  type={'checkbox'}
+                  label={restaurant.Name}
+                  onChange={() => restaurantCheckboxChanged(restaurant.Id)}
+                />
+              </div>))}
+          </div>
+        </Row>
+        <Row>
+          <DateRangePicker
+              isOutsideRange={() => false}
+              startDate={dates.fromDate} // momentPropTypes.momentObj or null,
+              startDateId="your_unique_start_date_id" // PropTypes.string.isRequired,
+              endDate={dates.toDate} // momentPropTypes.momentObj or null,
+              endDateId="your_unique_end_date_id" // PropTypes.string.isRequired,
+              onDatesChange={({ startDate, endDate }) => setDates({ fromDate: startDate, toDate: endDate })} // PropTypes.func.isRequired,
+              focusedInput={focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
+              onFocusChange={focusedInput => setFocusedInput(focusedInput)} // PropTypes.func.isRequired,
+          />
+        </Row>
+        <Row>
+          <Col>
+            <div>
+              <FloatingLabel label='From Hour:'>
+                <Form.Select onChange={(event) => setFromHour(event.target.value) }>
+                  {hours.map((hour) => (
+                    <option value={hour} key={hour}>{hour}</option>
+                  ))}
+                </Form.Select>
+              </FloatingLabel>
             </div>
-
-<div class="input-group mb-3">
-  <div class="input-group-prepend">
-    <div class="input-group-text">
-      <input type="checkbox" aria-label="Checkbox for following text input"/>
-    </div>
-  </div>
-  <input type="text" class="form-control" aria-label="Text input with checkbox"/>
-</div>
-  <div class="form-group">
-    <label for="exampleFormControlInput1">Email address</label>
-    <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com"/>
-  </div>
-  <div class="form-group">
-    <label for="exampleFormControlSelect1">Example select</label>
-    <select class="form-control" id="exampleFormControlSelect1">
-      <option>1</option>
-      <option>2</option>
-      <option>3</option>
-      <option>4</option>
-      <option>5</option>
-    </select>
-  </div>
-  <div class="form-group">
-    <label for="exampleFormControlSelect2">Example multiple select</label>
-    <select multiple class="form-control" id="exampleFormControlSelect2">
-      <option>1</option>
-      <option>2</option>
-      <option>3</option>
-      <option>4</option>
-      <option>5</option>
-    </select>
-  </div>
-  <div class="form-group">
-    <label for="exampleFormControlTextarea1">Example textarea</label>
-    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-  </div>
-</form>
-</div> )
+          </Col>
+          <Col>
+            <div>
+              <FloatingLabel label='To Hour:'>
+                <Form.Select defaultValue='29' onChange={(event) => setToHour(event.target.value) }>
+                  {hours.map((hour) => (
+                    <option value={hour} key={hour}>{hour}</option>
+                  ))}
+                </Form.Select>
+              </FloatingLabel>
+            </div>
+          </Col>
+        </Row>
+        <Row>
+            <Col>
+              <FloatingLabel label='Metric:'>
+                  <Form.Select onChange={(event) => setMetricCode(event.target.value)}>
+                      {metricDefinitions.map((def) => (
+                          <option value={def.MetricCode} key={def.MetricCode}>{def.Alias}</option>
+                      ))}
+                  </Form.Select>
+              </FloatingLabel>
+            </Col>
+            <Col>
+              <FloatingLabel label='Compare Type:'>
+                  <Form.Select onChange={(event) => setCompareType(event.target.value)}>
+                      {compareTypes.map((compareType) => (
+                          <option value={compareType.value} key={compareType.value}>{compareType.text}</option>
+                      ))}
+                  </Form.Select>
+              </FloatingLabel>
+            </Col>
+            <Col>
+              <FloatingLabel label='Compare Value:'>
+                <Form.Control type='number' onChange={(event) => setCompareValue(event.target.value)}/>
+              </FloatingLabel>
+            </Col>
+        </Row>
+      </Form>
+      
+      <Button type="button" variant='primary' onClick={() => submitForm()}>Submit</Button>
+    </div> 
+  )
 }
 
 
 export default FilterInput
-
-import React, {useEffect, useState} from "react";
-
-
-
-function BootstrapPage() {
-    const [restaurants, setRestaurants] = useState([
-        {
-            id: 1,
-            name: "Restaurant 1"
-        },
-        {
-            id: 2,
-            name: "Restaurant 2"
-        },
-        {
-            id: 3,
-            name: "Restaurant 3"
-        },
-        {
-            id: 4,
-            name: "Restaurant 4"
-        }
-    ]);
-
-    const [restaurantIds, setRestaurantIds] = useState([]);
-
-    
-
-    const restaurantCheckboxChanged = (id) => {
-        const newId = restaurantIds.find(restaurantId => {
-            return restaurantId === id
-        });
-
-        console.log(newId);
-
-        const newArray = [];
-        if (!newId) {
-            for (let i = 0; i < restaurantIds.length; i++) {
-                newArray[i] = restaurantIds[i];
-            }
-            newArray.push(id);
-
-            setRestaurantIds(newArray);
-        } else {
-            for (let i = 0; i < restaurantIds.length; i++) {
-                if (restaurantIds[i] !== id) {
-                    newArray.push(restaurantIds[i]);
-                }  
-            }
-
-            setRestaurantIds(newArray);
-        }
-    };
-
-    const submitForm = () => {
-        const formData = {
-            restaurantIds: restaurantIds, // array
-            fromDate: "2021-4-1", // date string in format YYYY-MM-DD
-            toDate: "2021-4-5", // date string in format YYYY-MM-DD
-            fromHour: 6, // integer (min value is 6, max value is 29)
-            toHour: 29, // integer (min value is 6, max value is 29)
-            metricCriteria: [{
-                metricCode: "TotalAmount", // string (comes from a list of metric codes in Metric Definitions)
-                compareType: "GreaterThan", // string - one of the compare type options
-                value: 35 // decimal (numerical value)
-            }] // array of metric criteria
-        };
-
-        console.log(formData);
-    }
-
-    console.log(restaurantIds);
-
-    return (
-        <div>
-        <form>
-            {restaurants.map((restaurant, index) => {
-                return (
-                    <div key={index}>
-                        <input type="checkbox" onChange={() => restaurantCheckboxChanged(restaurant.id)} aria-label="Checkbox for following text input" />
-                        <label>{restaurant.name}</label>
-                    </div>
-                )  
-            })};        
-
-            <div class="form-group">
-                <label for="exampleFormControlSelect1">Example select</label>
-                <select class="form-control" id="exampleFormControlSelect1">
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-                <option>5</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="exampleFormControlSelect2">Example multiple select</label>
-                <select multiple class="form-control" id="exampleFormControlSelect2">
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-                <option>5</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="exampleFormControlTextarea1">Example textarea</label>
-                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-            </div>
-            
-        </form>
-
-        <button type="button" class="btn btn-primary" onClick={() => submitForm()}>Submit</button>
-        </div>
-    )
-}
-
-export default BootstrapPage;
 
