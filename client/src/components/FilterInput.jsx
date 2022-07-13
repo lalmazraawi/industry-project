@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Form, FloatingLabel, Button, Row, Col } from 'react-bootstrap';
 import { DateRangePicker } from 'react-dates';
 import moment from "moment";
+import Results from "./Results"
 
 const FilterInput = () => {
 
@@ -19,6 +20,7 @@ const FilterInput = () => {
   const [metricCode, setMetricCode] = useState('')
   const [compareType, setCompareType] = useState('')
   const [compareValue, setCompareValue] = useState('')
+  const [foundTransactions, setFoundTransactions] = useState([])
 
   useEffect(() => {
     const fetchMetricDefintions = async () => {
@@ -80,8 +82,8 @@ const FilterInput = () => {
     };
 
     const fetchTransactions = async () => {
-      let { data } = await axios.post('http://localhost:1337/search', initialFormData)
-      console.log(data)
+      let transactionData = await axios.post('http://localhost:1337/search', initialFormData)
+      setFoundTransactions(transactionData.data)
     }
     fetchTransactions()
       .catch(console.error);
@@ -179,9 +181,12 @@ const FilterInput = () => {
       </Form>
       
       <Button type="button" variant='primary' onClick={() => submitForm()}>Submit</Button>
+      <Results foundTransactions= {foundTransactions} metricDefinitions= {metricDefinitions}/>
+      
     </div> 
   )
 }
+
 
 
 export default FilterInput

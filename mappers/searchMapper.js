@@ -35,7 +35,7 @@ const filterData = async (req, res) => {
     }]
   })
 
-  return res.status(200).send({ foundTransactions })
+  return res.status(200).send(foundTransactions)
 }
 
 module.exports = filterData
