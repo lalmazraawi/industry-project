@@ -108,7 +108,7 @@ const FilterInput = () => {
         <Row>
           <div>
             {restaurants.map((restaurant, index) => (
-              <div key={index} className="mb-3">
+              <div key={index}>
                 <Form.Check
                   type={'checkbox'}
                   label={restaurant.Name}
@@ -117,7 +117,7 @@ const FilterInput = () => {
               </div>))}
           </div>
         </Row>
-        <Row>
+        <Row className="mb-4">
           <DateRangePicker
               isOutsideRange={() => false}
               startDate={dates.fromDate} // momentPropTypes.momentObj or null,
@@ -129,7 +129,7 @@ const FilterInput = () => {
               onFocusChange={focusedInput => setFocusedInput(focusedInput)} // PropTypes.func.isRequired,
           />
         </Row>
-        <Row>
+        <Row className="mb-4">
           <Col>
             <div>
               <FloatingLabel label='From Hour:'>
@@ -153,7 +153,7 @@ const FilterInput = () => {
             </div>
           </Col>
         </Row>
-        <Row>
+        <Row className="mb-4">
             <Col>
               <FloatingLabel label='Metric:'>
                   <Form.Select onChange={(event) => setMetricCode(event.target.value)}>
