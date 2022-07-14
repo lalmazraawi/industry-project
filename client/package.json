@@ -10,6 +10,7 @@
     "moment": "^2.29.4",
     "react": "^16.14.0",
     "react-bootstrap": "^2.4.0",
+    "react-bootstrap-multiselect": "^2.4.1",
     "react-dates": "^21.8.0",
     "react-dom": "^16.14.0",
     "react-scripts": "5.0.1",
