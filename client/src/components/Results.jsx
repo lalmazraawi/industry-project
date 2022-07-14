@@ -9,7 +9,8 @@ const Results = (props) => {
     } = props
     
     return (<div>
-        <Table bordered>
+        
+        <Table bordered striped>
             <thead>
                 <tr>
                     <th>Restaurant Name:</th>
