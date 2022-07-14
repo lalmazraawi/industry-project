@@ -13,10 +13,10 @@ const FilterInput = () => {
   const [fromHour, setFromHour] = useState(6);
   const [toHour, setToHour] = useState(29);
   const [dates, setDates] = useState({
-      fromDate: moment("2021-03-11"),
-      toDate: moment("2021-05-11")
+      fromDate: moment("2021-03-31"),
+      toDate: moment("2021-04-02")
   });
-  const [focusedInput, setFocusedInput] = useState('startDate');
+  const [focusedInput, setFocusedInput] = useState(null);
   const [metricCode, setMetricCode] = useState('')
   const [compareType, setCompareType] = useState('')
   const [compareValue, setCompareValue] = useState('')
@@ -103,7 +103,7 @@ const FilterInput = () => {
   ]
 
   return (
-    <div>   
+    <div className='m-5'>   
       <Form>
         <Row>
           <div>
@@ -130,7 +130,7 @@ const FilterInput = () => {
           />
         </Row>
         <Row className="mb-4">
-          <Col>
+          <Col className="col-2">
             <div>
               <FloatingLabel label='From Hour:'>
                 <Form.Select onChange={(event) => setFromHour(event.target.value) }>
@@ -141,7 +141,7 @@ const FilterInput = () => {
               </FloatingLabel>
             </div>
           </Col>
-          <Col>
+          <Col className="col-2">
             <div>
               <FloatingLabel label='To Hour:'>
                 <Form.Select defaultValue='29' onChange={(event) => setToHour(event.target.value) }>
@@ -156,7 +156,8 @@ const FilterInput = () => {
         <Row className="mb-4">
             <Col>
               <FloatingLabel label='Metric:'>
-                  <Form.Select onChange={(event) => setMetricCode(event.target.value)}>
+                  <Form.Select value = {metricCode} onChange={(event) => setMetricCode(event.target.value)}>
+                    <option value = ''></option>
                       {metricDefinitions.map((def) => (
                           <option value={def.MetricCode} key={def.MetricCode}>{def.Alias}</option>
                       ))}

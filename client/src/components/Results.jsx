@@ -9,7 +9,7 @@ const Results = (props) => {
     } = props
     
     return (<div>
-        <Table>
+        <Table bordered>
             <thead>
                 <tr>
                     <th>Restaurant Name:</th>
@@ -31,14 +31,14 @@ const Results = (props) => {
                             <td>{transaction.BusDt}</td>
                             <td>{transaction.OrderTime}</td>
                             <td>{transaction.OrderNumber}</td>
-                            <td>{transaction.TotalAmount}</td>
-                            <td>{transaction.NetAmount}</td>
+                            <td>${transaction.TotalAmount}</td>
+                            <td>${transaction.NetAmount}</td>
                             <td>{transaction.ItemSoldQty}</td>
                             <td>{transaction.BeverageQty}</td>
                             <td>{transaction.DiscountAmount}</td>
-                            <td>{transaction.DiscountRatio}</td>
-                            <td>{transaction.ItemDeletedAmount}</td>
-                            <td>{transaction.RefundAmount}</td>
+                            <td>%{transaction.DiscountRatio}</td>
+                            <td>${transaction.ItemDeletedAmount}</td>
+                            <td>${transaction.RefundAmount}</td>
                         </tr>
                     )
                 })}
