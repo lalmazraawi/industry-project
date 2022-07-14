@@ -180,8 +180,9 @@ const FilterInput = () => {
             </Col>
         </Row>
       </Form>
-      
-      <Button type="button" variant='primary' onClick={() => submitForm()}>Submit</Button>
+      <div className="mb-4">
+        <Button type="button" variant='primary' onClick={() => submitForm()}>Submit</Button>
+      </div>
       <Results foundTransactions= {foundTransactions} metricDefinitions= {metricDefinitions}/>
       
     </div> 
