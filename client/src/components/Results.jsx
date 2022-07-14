@@ -27,9 +27,9 @@ const Results = (props) => {
     return (
         <div>
             {foundTransactions.length ? <Pagination>{items}</Pagination> : null }
-            <Table bordered striped>
+            <Table bordered striped style={{ fontSize: 12 }}>
                 <thead>
-                    <tr>
+                    <tr className='lh-1'>
                         <th>Restaurant Name:</th>
                         <th>Transaction Date:</th>
                         <th>Transaction Time:</th>
@@ -46,7 +46,7 @@ const Results = (props) => {
                         .slice(((page*20)-20), (page*20))
                         .map((transaction, i) => {
                         return(
-                            <tr key={i}>
+                            <tr key={i} className='lh-1'>
                                 <td>{transaction.restaurant.Name}</td>
                                 <td>{transaction.BusDt}</td>
                                 <td>{transaction.OrderTime}</td>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from 'axios';
-import { Form, FloatingLabel, Button, Row, Col } from 'react-bootstrap';
+import { Form, FloatingLabel, Button, Row, Col, Container } from 'react-bootstrap';
 import { DateRangePicker } from 'react-dates';
 import moment from "moment";
 import Results from "./Results"
@@ -103,88 +103,91 @@ const FilterInput = () => {
   ]
 
   return (
-    <div className='m-5'>   
-      <Form>
-        <Row>
-          <div>
-            {restaurants.map((restaurant, index) => (
-              <div key={index}>
-                <Form.Check
-                  type={'checkbox'}
-                  label={restaurant.Name}
-                  onChange={() => restaurantCheckboxChanged(restaurant.Id)}
-                />
-              </div>))}
-          </div>
-        </Row>
-        <Row className="mb-4">
-          <DateRangePicker
-              isOutsideRange={() => false}
-              startDate={dates.fromDate} // momentPropTypes.momentObj or null,
-              startDateId="your_unique_start_date_id" // PropTypes.string.isRequired,
-              endDate={dates.toDate} // momentPropTypes.momentObj or null,
-              endDateId="your_unique_end_date_id" // PropTypes.string.isRequired,
-              onDatesChange={({ startDate, endDate }) => setDates({ fromDate: startDate, toDate: endDate })} // PropTypes.func.isRequired,
-              focusedInput={focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
-              onFocusChange={focusedInput => setFocusedInput(focusedInput)} // PropTypes.func.isRequired,
-          />
-        </Row>
-        <Row className="mb-4">
-          <Col className="col-2">
+    <div className='m-5'> 
+      <Container className='border p-4'> 
+        <Form>
+          <Row>
             <div>
-              <FloatingLabel label='From Hour:'>
-                <Form.Select onChange={(event) => setFromHour(event.target.value) }>
-                  {hours.map((hour) => (
-                    <option value={hour} key={hour}>{hour}</option>
-                  ))}
-                </Form.Select>
-              </FloatingLabel>
+              {restaurants.map((restaurant, index) => (
+                <div key={index}>
+                  <Form.Check
+                    type={'checkbox'}
+                    label={restaurant.Name}
+                    onChange={() => restaurantCheckboxChanged(restaurant.Id)}
+                  />
+                </div>))}
             </div>
-          </Col>
-          <Col className="col-2">
-            <div>
-              <FloatingLabel label='To Hour:'>
-                <Form.Select defaultValue='29' onChange={(event) => setToHour(event.target.value) }>
-                  {hours.map((hour) => (
-                    <option value={hour} key={hour}>{hour}</option>
-                  ))}
-                </Form.Select>
-              </FloatingLabel>
-            </div>
-          </Col>
-        </Row>
-        <Row className="mb-4">
-            <Col>
-              <FloatingLabel label='Metric:'>
-                  <Form.Select value = {metricCode} onChange={(event) => setMetricCode(event.target.value)}>
-                    <option value = ''></option>
-                      {metricDefinitions.map((def) => (
-                          <option value={def.MetricCode} key={def.MetricCode}>{def.Alias}</option>
-                      ))}
+          </Row>
+          <Row className="mb-4">
+            <DateRangePicker
+                isOutsideRange={() => false}
+                startDate={dates.fromDate} // momentPropTypes.momentObj or null,
+                startDateId="your_unique_start_date_id" // PropTypes.string.isRequired,
+                endDate={dates.toDate} // momentPropTypes.momentObj or null,
+                endDateId="your_unique_end_date_id" // PropTypes.string.isRequired,
+                onDatesChange={({ startDate, endDate }) => setDates({ fromDate: startDate, toDate: endDate })} // PropTypes.func.isRequired,
+                focusedInput={focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
+                onFocusChange={focusedInput => setFocusedInput(focusedInput)} // PropTypes.func.isRequired,
+            />
+          </Row>
+          <Row className="mb-4">
+            <Col className="col-2">
+              <div>
+                <FloatingLabel label='From Hour:'>
+                  <Form.Select onChange={(event) => setFromHour(event.target.value) }>
+                    {hours.map((hour) => (
+                      <option value={hour} key={hour}>{hour}</option>
+                    ))}
                   </Form.Select>
-              </FloatingLabel>
+                </FloatingLabel>
+              </div>
             </Col>
-            <Col>
-              <FloatingLabel label='Compare Type:'>
-                  <Form.Select onChange={(event) => setCompareType(event.target.value)}>
-                      {compareTypes.map((compareType) => (
-                          <option value={compareType.value} key={compareType.value}>{compareType.text}</option>
-                      ))}
+            <Col className="col-2">
+              <div>
+                <FloatingLabel label='To Hour:'>
+                  <Form.Select defaultValue='29' onChange={(event) => setToHour(event.target.value) }>
+                    {hours.map((hour) => (
+                      <option value={hour} key={hour}>{hour}</option>
+                    ))}
                   </Form.Select>
-              </FloatingLabel>
+                </FloatingLabel>
+              </div>
             </Col>
-            <Col>
-              <FloatingLabel label='Compare Value:'>
-                <Form.Control type='number' onChange={(event) => setCompareValue(event.target.value)}/>
-              </FloatingLabel>
-            </Col>
-        </Row>
-      </Form>
-      <div className="mb-4">
-        <Button type="button" variant='primary' onClick={() => submitForm()}>Submit</Button>
-      </div>
-      <Results foundTransactions= {foundTransactions} metricDefinitions= {metricDefinitions}/>
-      
+          </Row>
+          <Row className="mb-4">
+              <Col>
+                <FloatingLabel label='Metric:'>
+                    <Form.Select value = {metricCode} onChange={(event) => setMetricCode(event.target.value)}>
+                      <option value = ''></option>
+                        {metricDefinitions.map((def) => (
+                            <option value={def.MetricCode} key={def.MetricCode}>{def.Alias}</option>
+                        ))}
+                    </Form.Select>
+                </FloatingLabel>
+              </Col>
+              <Col>
+                <FloatingLabel label='Compare Type:'>
+                    <Form.Select onChange={(event) => setCompareType(event.target.value)}>
+                        {compareTypes.map((compareType) => (
+                            <option value={compareType.value} key={compareType.value}>{compareType.text}</option>
+                        ))}
+                    </Form.Select>
+                </FloatingLabel>
+              </Col>
+              <Col>
+                <FloatingLabel label='Compare Value:'>
+                  <Form.Control type='number' onChange={(event) => setCompareValue(event.target.value)}/>
+                </FloatingLabel>
+              </Col>
+            </Row>
+          </Form>
+        <div className="mb-4">
+          <Button type="button" variant='primary' onClick={() => submitForm()}>Submit</Button>
+        </div>
+      </Container> 
+      <Container className='border p-4 mt-5 overflow-auto'>
+        <Results foundTransactions= {foundTransactions} metricDefinitions= {metricDefinitions}/>
+      </Container>
     </div> 
   )
 }
