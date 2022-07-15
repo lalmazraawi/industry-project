@@ -4,11 +4,11 @@ import { Form, FloatingLabel, Button, Row, Col, Container } from 'react-bootstra
 import { DateRangePicker } from 'react-dates';
 import moment from "moment";
 import Results from "./Results"
+import Select from 'react-select'
 
 const FilterInput = () => {
 
   const [metricDefinitions, setMetricDefinitions] = useState([]);
-  const [restaurantIds, setRestaurantIds] = useState([]);
   const [restaurants, setRestaurants] = useState([]);
   const [fromHour, setFromHour] = useState(6);
   const [toHour, setToHour] = useState(29);
@@ -21,6 +21,7 @@ const FilterInput = () => {
   const [compareType, setCompareType] = useState('')
   const [compareValue, setCompareValue] = useState('')
   const [foundTransactions, setFoundTransactions] = useState([])
+  const [selectedOption, setSelectedOption] = useState(null);
 
   useEffect(() => {
     const fetchMetricDefintions = async () => {
@@ -43,33 +44,9 @@ const FilterInput = () => {
       .catch(console.error);
     }, [])
 
-  const restaurantCheckboxChanged = (id) => {
-    const newId = restaurantIds.find((restaurantId) => {
-      return (restaurantId === id)
-    });
-
-    const newArray = [];
-    if (!newId) {
-      for (let i = 0; i < restaurantIds.length; i++) {
-        newArray[i] = restaurantIds[i];
-      }
-      newArray.push(id);
-
-      setRestaurantIds(newArray);
-    } else {
-      for (let i = 0; i < restaurantIds.length; i++) {
-        if (restaurantIds[i] !== id) {
-          newArray.push(restaurantIds[i]);
-        }  
-      }
-
-      setRestaurantIds(newArray);
-    }
-  }
-
   const submitForm = () => {
     const initialFormData = {
-      restaurantIds: restaurantIds, // array
+      restaurantIds: selectedOption.map((op) => { return op.value }), // array
       fromDate: dates.fromDate, // date string in format YYYY-MM-DD
       toDate: dates.toDate, // date string in format YYYY-MM-DD
       fromHour: fromHour, // integer (min value is 6, max value is 29)
@@ -102,23 +79,28 @@ const FilterInput = () => {
     { value: 'GreaterThanOrEqual', text: '>=' }
   ]
 
+  let restaurantOptions = []
+  for (let i = 0; i < restaurants.length; i++) {
+    restaurantOptions.push({ value: restaurants[i].Id, label: restaurants[i].Name })
+  }
+
   return (
     <div className='m-5'> 
       <Container className='border p-4'> 
         <Form>
           <Row>
             <div>
-              {restaurants.map((restaurant, index) => (
-                <div key={index}>
-                  <Form.Check
-                    type={'checkbox'}
-                    label={restaurant.Name}
-                    onChange={() => restaurantCheckboxChanged(restaurant.Id)}
-                  />
-                </div>))}
+              <Select
+                defaultValue={selectedOption}
+                options={restaurantOptions}
+                onChange={setSelectedOption}
+                isMulti={true}
+                className="mb-4"
+              />
             </div>
           </Row>
           <Row className="mb-4">
+            <Col>
             <DateRangePicker
                 isOutsideRange={() => false}
                 startDate={dates.fromDate} // momentPropTypes.momentObj or null,
@@ -129,9 +111,8 @@ const FilterInput = () => {
                 focusedInput={focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
                 onFocusChange={focusedInput => setFocusedInput(focusedInput)} // PropTypes.func.isRequired,
             />
-          </Row>
-          <Row className="mb-4">
-            <Col className="col-2">
+            </Col>
+            <Col className="col-3">
               <div>
                 <FloatingLabel label='From Hour:'>
                   <Form.Select onChange={(event) => setFromHour(event.target.value) }>
@@ -142,7 +123,7 @@ const FilterInput = () => {
                 </FloatingLabel>
               </div>
             </Col>
-            <Col className="col-2">
+            <Col className="col-3">
               <div>
                 <FloatingLabel label='To Hour:'>
                   <Form.Select defaultValue='29' onChange={(event) => setToHour(event.target.value) }>
