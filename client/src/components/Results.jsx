@@ -1,5 +1,6 @@
 import React, { useState } from "react"
 import { Table, Pagination } from "react-bootstrap"
+import moment from "moment"
 
 
 const Results = (props) => {
@@ -49,16 +50,16 @@ const Results = (props) => {
                             <tr key={i} className='lh-1'>
                                 <td>{transaction.restaurant.Name}</td>
                                 <td>{transaction.BusDt}</td>
-                                <td>{transaction.OrderTime}</td>
+                                <td>{moment(transaction.OrderTime).format('HH:mm:ss')}</td>
                                 <td>{transaction.OrderNumber}</td>
-                                <td>${transaction.TotalAmount}</td>
-                                <td>${transaction.NetAmount}</td>
+                                <td>${transaction.TotalAmount.toFixed(2)}</td>
+                                <td>${transaction.NetAmount.toFixed(2)}</td>
                                 <td>{transaction.ItemSoldQty}</td>
                                 <td>{transaction.BeverageQty}</td>
                                 <td>{transaction.DiscountAmount}</td>
                                 <td>%{transaction.DiscountRatio}</td>
-                                <td>${transaction.ItemDeletedAmount}</td>
-                                <td>${transaction.RefundAmount}</td>
+                                <td>${transaction.ItemDeletedAmount.toFixed(2)}</td>
+                                <td>${transaction.RefundAmount.toFixed(2)}</td>
                             </tr>
                         )
                     })}

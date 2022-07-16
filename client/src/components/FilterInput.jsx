@@ -73,6 +73,7 @@ const FilterInput = () => {
 
   return (
     <div className='m-5'> 
+    <h1 className="text-center fw-lighter">Restaurant Search Query</h1>
       <Container className='border p-4'> 
         <Form>
           <Row>

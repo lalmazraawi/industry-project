@@ -56,13 +56,13 @@ const MetricSelector = (props) => {
           <Button 
             type="button" 
             variant='primary' 
-            onClick={() => { setButtonClicks((prevButtonClicks) => [...prevButtonClicks, prevButtonClicks.length]) }}>+</Button>
+            onClick={() => { setButtonClicks((prevButtonClicks) => [...prevButtonClicks, prevButtonClicks.length]) }}>Add Filter</Button>
         </Col>
         <Col>
           <Button
             type="button"
             variant='primary'
-            onClick={() => { handleDeleteMetric() }}>-</Button>
+            onClick={() => { handleDeleteMetric() }}>Remove Filter</Button>
         </Col>
       </Row>
       {buttonClicks.map((i, index) => {
