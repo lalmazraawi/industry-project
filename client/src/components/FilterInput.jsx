@@ -5,6 +5,7 @@ import { DateRangePicker } from 'react-dates';
 import moment from "moment";
 import Results from "./Results"
 import Select from 'react-select'
+import MetricSelector from "./MetricSelector";
 
 const FilterInput = () => {
 
@@ -17,19 +18,17 @@ const FilterInput = () => {
       toDate: moment("2021-04-02")
   });
   const [focusedInput, setFocusedInput] = useState(null);
-  const [metricCode, setMetricCode] = useState('')
-  const [compareType, setCompareType] = useState('')
-  const [compareValue, setCompareValue] = useState('')
+  const [metrics, setMetrics] = useState([])
   const [foundTransactions, setFoundTransactions] = useState([])
-  const [selectedOption, setSelectedOption] = useState(null);
+  const [selectedOption, setSelectedOption] = useState(null)
 
   useEffect(() => {
-    const fetchMetricDefintions = async () => {
+    const fetchMetricDefinitions = async () => {
       let {data} = await axios.get('http://localhost:1337/metricDefinition')
       setMetricDefinitions(data)
     }
 
-    fetchMetricDefintions ()
+    fetchMetricDefinitions()
     .catch(console.error);
 
   }, [])
@@ -51,11 +50,7 @@ const FilterInput = () => {
       toDate: dates.toDate, // date string in format YYYY-MM-DD
       fromHour: fromHour, // integer (min value is 6, max value is 29)
       toHour: toHour, // integer (min value is 6, max value is 29)
-      metricCriteria: [{
-        metricCode: metricCode, // string (comes from a list of metric codes in Metric Definitions)
-        compareType: compareType, // string - one of the compare type options
-        value: Number(compareValue) // decimal (numerical value)
-      }] // array of metric criteria
+      metricCriteria: [...metrics]
     };
 
     const fetchTransactions = async () => {
@@ -70,14 +65,6 @@ const FilterInput = () => {
   for (let i = 6; i < 30; i++) {
     hours.push(i)
   }
-
-  const compareTypes = [
-    { value: 'LessThan', text: '<' },
-    { value: 'LessThanOrEqual', text: '<=' },
-    { value: 'Equal', text: '=' },
-    { value: 'GreaterThan', text: '>' },
-    { value: 'GreaterThanOrEqual', text: '>=' }
-  ]
 
   let restaurantOptions = []
   for (let i = 0; i < restaurants.length; i++) {
@@ -136,31 +123,8 @@ const FilterInput = () => {
             </Col>
           </Row>
           <Row className="mb-4">
-              <Col>
-                <FloatingLabel label='Metric:'>
-                    <Form.Select value = {metricCode} onChange={(event) => setMetricCode(event.target.value)}>
-                      <option value = ''></option>
-                        {metricDefinitions.map((def) => (
-                            <option value={def.MetricCode} key={def.MetricCode}>{def.Alias}</option>
-                        ))}
-                    </Form.Select>
-                </FloatingLabel>
-              </Col>
-              <Col>
-                <FloatingLabel label='Compare Type:'>
-                    <Form.Select onChange={(event) => setCompareType(event.target.value)}>
-                        {compareTypes.map((compareType) => (
-                            <option value={compareType.value} key={compareType.value}>{compareType.text}</option>
-                        ))}
-                    </Form.Select>
-                </FloatingLabel>
-              </Col>
-              <Col>
-                <FloatingLabel label='Compare Value:'>
-                  <Form.Control type='number' onChange={(event) => setCompareValue(event.target.value)}/>
-                </FloatingLabel>
-              </Col>
-            </Row>
+            <MetricSelector metricDefinitions={metricDefinitions} setMetrics={setMetrics}/>
+          </Row>
           </Form>
         <div className="mb-4">
           <Button type="button" variant='primary' onClick={() => submitForm()}>Submit</Button>
@@ -173,7 +137,4 @@ const FilterInput = () => {
   )
 }
 
-
-
 export default FilterInput
-
