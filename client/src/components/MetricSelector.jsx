@@ -6,7 +6,7 @@ const MetricSelector = (props) => {
   const { metricDefinitions, setMetrics } = props
 
   const [buttonClicks, setButtonClicks] = useState([0])
-  const [metricsArray, setMetricsArray] = useState([])
+  const [metricsArray, setMetricsArray] = useState([{ metricCode: '', compareType: '', value: 0 }])
 
   useEffect(() => {
     setMetrics(metricsArray)
@@ -20,9 +20,11 @@ const MetricSelector = (props) => {
     { value: 'GreaterThanOrEqual', text: '>=' }
   ]
 
-  const addMetricCode = (value) => {
-    let newObj = { metricCode: value, compareType: '', value: 0 }
-    setMetricsArray((prevArray) => [...prevArray, newObj]);
+  const addMetricCode = (value, index) => {
+    setMetricsArray((prevArray) => {
+      prevArray[index].metricCode = value
+      return [...prevArray]
+    })
   }
 
   const addCompareType = (value, index) => {
@@ -37,6 +39,11 @@ const MetricSelector = (props) => {
       prevArray[index].value = value
       return [...prevArray]
     })
+  }
+
+  const handleAddMetric = () => {
+    setButtonClicks((prevButtonClicks) => [...prevButtonClicks, prevButtonClicks.length])
+    setMetricsArray((prevMetricsArray) => [...prevMetricsArray, { metricCode: '', compareType: '', value: 0 }])
   }
 
   const handleDeleteMetric = () => {
@@ -56,7 +63,7 @@ const MetricSelector = (props) => {
           <Button 
             type="button" 
             variant='primary' 
-            onClick={() => { setButtonClicks((prevButtonClicks) => [...prevButtonClicks, prevButtonClicks.length]) }}>Add Filter</Button>
+            onClick={() => { handleAddMetric() }}>Add Filter</Button>
         </Col>
         <Col>
           <Button
@@ -70,7 +77,7 @@ const MetricSelector = (props) => {
           <Row key={i} className="mb-4">
             <Col>
               <FloatingLabel label='Metric:'>
-                <Form.Select onChange={(event) => addMetricCode(event.target.value)}>
+                <Form.Select onChange={(event) => addMetricCode(event.target.value, index)}>
                   <option value=''></option>
                   {metricDefinitions.map((def) => (<option value={def.MetricCode} key={def.MetricCode}>{def.Alias}</option>))}
                 </Form.Select>

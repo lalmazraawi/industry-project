@@ -57,7 +57,7 @@ const Results = (props) => {
                                 <td>{transaction.ItemSoldQty}</td>
                                 <td>{transaction.BeverageQty}</td>
                                 <td>{transaction.DiscountAmount}</td>
-                                <td>%{transaction.DiscountRatio}</td>
+                                <td>{transaction.DiscountRatio.toFixed(2)}%</td>
                                 <td>${transaction.ItemDeletedAmount.toFixed(2)}</td>
                                 <td>${transaction.RefundAmount.toFixed(2)}</td>
                             </tr>
