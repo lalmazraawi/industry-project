@@ -1,0 +1,58 @@
+[
+    {
+        "Id":1,
+        "MetricCode":"TotalAmount",
+        "Alias":"Transaction Total Amount $",
+        "DataType":"Money",
+        "DecimalPlaces":2
+    },
+    {
+        "Id":2,
+        "MetricCode":"NetAmount",
+        "Alias":"Transaction Net Amount $",
+        "DataType":"Money",
+        "DecimalPlaces":2
+    },
+    {
+        "Id":3,
+        "MetricCode":"ItemSoldQty",
+        "Alias":"Items Sold #",
+        "DataType":"Number",
+        "DecimalPlaces":0
+    },
+    {   
+        "Id":4,
+        "MetricCode":"BeverageQty",
+        "Alias":"Beverages Sold #",
+        "DataType":"Number",
+        "DecimalPlaces":0
+    },
+    {
+        "Id":5,
+        "MetricCode":"DiscountAmount",
+        "Alias":"Transaction Discount Amount $",
+        "DataType":"Money",
+        "DecimalPlaces":2
+    },
+    {
+        "Id":6,
+        "MetricCode":"ItemDeletedAmount",
+        "Alias":"Transaction Discount Ratio %",
+        "DataType":"Percent",
+        "DecimalPlaces":2
+    },
+    {
+        "Id":7,
+        "MetricCode":"DiscountRatio",
+        "Alias":"Item Deleted Amount $",
+        "DataType":"Money",
+        "DecimalPlaces":2
+    },
+    {
+        "Id":8,
+        "MetricCode":"RefundAmount",
+        "Alias":"Transaction Refund Amount $",
+        "DataType":"Money",
+        "DecimalPlaces":2
+    }
+]
