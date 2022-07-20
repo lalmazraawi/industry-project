@@ -24,7 +24,7 @@ const FilterInput = () => {
 
   useEffect(() => {
     const fetchMetricDefinitions = async () => {
-      let {data} = await axios.get('http://localhost:1337/metricDefinition')
+      let {data} = await axios.get('/metricDefinition')
       setMetricDefinitions(data)
     }
 
@@ -35,7 +35,7 @@ const FilterInput = () => {
 
   useEffect(() => {
     const fetcheRestaurants = async () => {
-      let {data} = await axios.get('http://localhost:1337/restaurants')
+      let {data} = await axios.get('/restaurants')
       setRestaurants(data)
     }
 
@@ -54,7 +54,7 @@ const FilterInput = () => {
     };
 
     const fetchTransactions = async () => {
-      let transactionData = await axios.post('http://localhost:1337/search', initialFormData)
+      let transactionData = await axios.post('/search', initialFormData)
       setFoundTransactions(transactionData.data)
     }
     fetchTransactions()

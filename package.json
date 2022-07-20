@@ -29,6 +29,9 @@
     "lint": "eslint --format codeframe .",
     "lint:fix": "eslint --fix --format codeframe .",
     "dev:client:test": "cd client && npm run test",
-    "dev:server:test": "env-cmd mocha tests/**/*.test.js"
+    "dev:server:test": "env-cmd mocha tests/**/*.test.js",
+    "start":"node index.js",
+    "build":"npm run prod:migrate && cd client && npm install && npm run build",
+    "prod:migrate": " sequelize db:migrate --env production --config ./config/sequelize.js"
   }
 }

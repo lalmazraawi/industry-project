@@ -3,6 +3,7 @@ const path = require('path')
 const cors = require('cors')
 const bodyParser = require('body-parser')
 const customSearchQuery = express()
+const port = process.env.PORT || 1337
 
 customSearchQuery.use(express.static('client/build'))
 customSearchQuery.use(cors())
@@ -21,6 +22,6 @@ customSearchQuery.use('/restaurants', restaurantsRouter)
 
 customSearchQuery.all('*', (req, res) => res.sendFile(path.resolve(__dirname, 'client/build', 'index.html')))
 
-customSearchQuery.listen(1337, () => {
-  console.log('listening at http://localhost:1337...') // eslint-disable-line no-console
+customSearchQuery.listen(port, () => {
+  console.log(`listening at http://localhost:${port}...`) // eslint-disable-line no-console
 })
